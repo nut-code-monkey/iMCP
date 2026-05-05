@@ -49,32 +49,31 @@ struct ContentView: View {
                     await serverController.setEnabled(isEnabled)
                 }
             }
-
             
-            VStack(alignment: .leading, spacing: 8) {
-                Divider()
-                Text("Services")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.secondary)
-                    .opacity(isEnabled ? 1.0 : 0.4)
-                    .padding(.horizontal, 14)
-                
-                ForEach(serviceConfigs) { config in
-                    ServiceToggleView(config: config)
+            if isEnabled {
+                VStack(alignment: .leading, spacing: 8) {
+                    Divider()
+                    Text("Services")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.secondary)
+                        .opacity(isEnabled ? 1.0 : 0.4)
+                        .padding(.horizontal, 14)
+                    
+                    ForEach(serviceConfigs) { config in
+                        ServiceToggleView(config: config)
+                    }
                 }
-            }
-            .padding(.top, 8)
-            .padding(.bottom, 4)
-            .padding(.horizontal, 2)
-            .onChange(of: serviceConfigs.map { $0.binding.wrappedValue }, initial: true) {
-                Task {
-                    await serverController.updateServiceBindings(serviceBindings)
+                .padding(.top, 8)
+                .padding(.bottom, 4)
+                .padding(.horizontal, 2)
+                .onChange(of: serviceConfigs.map { $0.binding.wrappedValue }, initial: true) {
+                    Task {
+                        await serverController.updateServiceBindings(serviceBindings)
+                    }
                 }
+                .transition(.opacity.combined(with: .move(edge: .top)))
+                .animation(.easeInOut(duration: 0.3), value: isEnabled)
             }
-            .disabled(!isEnabled)
-            .transition(.opacity.combined(with: .move(edge: .top)))
-            .animation(.easeInOut(duration: 0.3), value: isEnabled)
-            
 
             VStack(alignment: .leading, spacing: 2) {
                 Divider()

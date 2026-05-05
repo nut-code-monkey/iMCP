@@ -17,7 +17,8 @@ struct App: SwiftUI.App {
         }
         .menuBarExtraAccess(isPresented: $isMenuPresented)
         .menuBarExtraStyle(.window)
-
+        .windowResizability(.contentSize)
+        
         Settings {
             SettingsView(serverController: serverController)
         }
