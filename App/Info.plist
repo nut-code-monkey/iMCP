@@ -8,6 +8,8 @@
 	<array>
 		<string>_mcp._tcp</string>
 	</array>
+	<key>OPEN_WEATHER_KEY</key>
+	<string>$(OPEN_WEATHER_KEY)</string>
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
 	<key>SUFeedURL</key>

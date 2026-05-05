@@ -59,10 +59,8 @@ enum ServiceRegistry {
             RemindersService.shared,
             ShortcutsService.shared,
             UtilitiesService.shared,
+            weather
         ]
-        #if WEATHERKIT_AVAILABLE
-            services.append(WeatherService.shared)
-        #endif
         return services
     }()
 
@@ -136,18 +134,26 @@ enum ServiceRegistry {
                 binding: shortcutsEnabled
             ),
         ]
-        #if WEATHERKIT_AVAILABLE
+        if !weather.tools.isEmpty {
             configs.append(
                 ServiceConfig(
                     name: "Weather",
                     iconName: "cloud.sun.fill",
                     color: .cyan,
-                    service: WeatherService.shared,
+                    service: weather,
                     binding: weatherEnabled
                 )
             )
-        #endif
+        }
         return configs
+    }
+    
+    static var weather: any Service {
+#if WEATHERKIT_AVAILABLE
+        WeatherService.shared
+#else
+        OpenWeatherMapService.shared
+#endif
     }
 }
 
