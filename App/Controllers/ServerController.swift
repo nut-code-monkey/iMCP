@@ -59,6 +59,7 @@ enum ServiceRegistry {
             RemindersService.shared,
             ShortcutsService.shared,
             UtilitiesService.shared,
+            UserNotificationService.shared
         ]
         #if WEATHERKIT_AVAILABLE
             services.append(WeatherService.shared)
@@ -76,7 +77,8 @@ enum ServiceRegistry {
         remindersEnabled: Binding<Bool>,
         shortcutsEnabled: Binding<Bool>,
         utilitiesEnabled: Binding<Bool>,
-        weatherEnabled: Binding<Bool>
+        weatherEnabled: Binding<Bool>,
+        notificationsEnabled: Binding<Bool>
     ) -> [ServiceConfig] {
         var configs: [ServiceConfig] = [
             ServiceConfig(
@@ -135,6 +137,13 @@ enum ServiceRegistry {
                 service: ShortcutsService.shared,
                 binding: shortcutsEnabled
             ),
+            ServiceConfig(
+                name: "Notifications",
+                iconName: "bell.circle.fill",
+                color: .teal,
+                service: UserNotificationService.shared,
+                binding: notificationsEnabled
+            ),
         ]
         #if WEATHERKIT_AVAILABLE
             configs.append(
@@ -175,7 +184,7 @@ final class ServerController: ObservableObject {
     @AppStorage("shortcutsEnabled") private var shortcutsEnabled = false
     @AppStorage("utilitiesEnabled") private var utilitiesEnabled = true  // Default enabled
     @AppStorage("weatherEnabled") private var weatherEnabled = false
-
+    @AppStorage("notificationsEnabled") private var notificationsEnabled = false // Default enabled
     // MARK: - AppStorage for Trusted Clients
     @AppStorage("trustedClients") private var trustedClientsData = Data()
 
@@ -191,7 +200,8 @@ final class ServerController: ObservableObject {
             remindersEnabled: $remindersEnabled,
             shortcutsEnabled: $shortcutsEnabled,
             utilitiesEnabled: $utilitiesEnabled,
-            weatherEnabled: $weatherEnabled
+            weatherEnabled: $weatherEnabled,
+            notificationsEnabled: $notificationsEnabled
         )
     }
 
