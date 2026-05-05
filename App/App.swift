@@ -11,12 +11,13 @@ struct App: SwiftUI.App {
         MenuBarExtra("iMCP", image: #"MenuIcon-\#(isEnabled ? "On" : "Off")"#) {
             ContentView(
                 serverManager: serverController,
-                isEnabled: $isEnabled,
+                isEnabled: $isEnabled.animation(),
                 isMenuPresented: $isMenuPresented
             )
         }
         .menuBarExtraAccess(isPresented: $isMenuPresented)
         .menuBarExtraStyle(.window)
+        .windowResizability(.contentSize)
 
         Settings {
             SettingsView(serverController: serverController)
